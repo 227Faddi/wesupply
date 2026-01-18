@@ -1,3 +1,15 @@
+/* Scrollbar blanche pour masquer la ligne grise à droite */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+.custom-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 @import "tailwindcss";
 
 :root {

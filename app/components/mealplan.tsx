@@ -1,10 +1,10 @@
 'use client';
 
-type DayKey = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI';
+type DayKey = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
 type WeekKey = 'WEEK 1' | 'WEEK 2' | 'WEEK 3' | 'WEEK 4';
 
 export default function MealPlan() {
-  const days: DayKey[] = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  const days: DayKey[] = ['MON', 'TUE', 'WED', 'THU', 'FRI','SAT','SUN'];
   const weeks: WeekKey[] = ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4'];
   
   const mealData: Record<DayKey, Record<WeekKey, { B: string; L: string; D: string }>> = {
@@ -38,24 +38,36 @@ export default function MealPlan() {
       'WEEK 3': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
       'WEEK 4': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
     },
+    SAT: {
+      'WEEK 1': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
+      'WEEK 2': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
+      'WEEK 3': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
+      'WEEK 4': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
+    },
+    SUN: {
+      'WEEK 1': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
+      'WEEK 2': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
+      'WEEK 3': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
+      'WEEK 4': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
+    },
   };
 
   return (
     <main className="flex-1 p-8 bg-white overflow-auto">
-      <h1 className="text-3xl font-bold text-purple-600 text-center mb-8 font-[family:var(--font-montserrat)]">
+      <h1 className="text-3xl font-bold text-[#0033FF] text-center mb-8 font-[family:var(--font-montserrat)]">
         Meal Plan
       </h1>
 
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse font-[family:var(--font-poppins)] shadow-2xl rounded-lg overflow-hidden">
+      <div className="overflow-x-auto w-full flex justify-center">
+        <table className="w-full max-w-2xl border-collapse font-[family:var(--font-poppins)] shadow-2xl rounded-lg overflow-hidden bg-white" style={{ tableLayout: 'fixed' }}>
           <thead>
             <tr>
-              <th className="bg-white text-white font-semibold p-3 text-center border border-purple-200 text-sm">
+              <th className="bg-white text-[#977DFF] font-semibold p-3 text-center border border-[#977DFF] text-sm">
               </th>
               {weeks.map((week) => (
                 <th
                   key={week}
-                  className="bg-white text-purple-600 font-semibold p-3 text-center border border-purple-200 text-sm"
+                  className="bg-white text-[#0033FF] font-semibold p-3 text-center border border-[#977DFF] text-sm"
                 >
                   {week}
                 </th>
@@ -65,23 +77,41 @@ export default function MealPlan() {
           <tbody>
             {days.map((day) => (
               <tr key={day}>
-                <td className="bg-white text-purple-600 font-semibold p-3 text-center border border-purple-200 w-16">
+                <td className="bg-white text-[#0033FF] font-semibold p-3 text-center border border-[#977DFF] w-16">
                   {day}
                 </td>
                 {weeks.map((week) => (
                   <td
                     key={`${day}-${week}`}
-                    className="p-3 border border-purple-200 text-xs text-gray-700 align-top bg-white"
+                    className="p-3 border border-[#977DFF] text-xs text-[#0600AF] align-top bg-white"
                   >
                     <div className="space-y-1">
                       <div>
-                        <span className="font-semibold text-purple-600">B:</span> {mealData[day][week].B}
+                        <span className="font-semibold text-[#977DFF]">B:</span>{' '}
+                        <a
+                          href={`/recipes/${encodeURIComponent(`${week}-${day}-B-${mealData[day][week].B}`)}`}
+                          className="text-[#0033FF] hover:underline cursor-pointer hover:text-[#0600AF]"
+                        >
+                          {mealData[day][week].B}
+                        </a>
                       </div>
                       <div>
-                        <span className="font-semibold text-purple-600">L:</span> {mealData[day][week].L}
+                        <span className="font-semibold text-[#977DFF]">L:</span>{' '}
+                        <a
+                          href={`/recipes/${encodeURIComponent(`${week}-${day}-L-${mealData[day][week].L}`)}`}
+                          className="text-[#0033FF] hover:underline cursor-pointer hover:text-[#0600AF]"
+                        >
+                          {mealData[day][week].L}
+                        </a>
                       </div>
                       <div>
-                        <span className="font-semibold text-purple-600">D:</span> {mealData[day][week].D}
+                        <span className="font-semibold text-[#977DFF]">D:</span>{' '}
+                        <a
+                          href={`/recipes/${encodeURIComponent(`${week}-${day}-D-${mealData[day][week].D}`)}`}
+                          className="text-[#0033FF] hover:underline cursor-pointer hover:text-[#0600AF]"
+                        >
+                          {mealData[day][week].D}
+                        </a>
                       </div>
                     </div>
                   </td>

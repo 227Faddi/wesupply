@@ -60,13 +60,13 @@ export default function SettingsPage() {
   return (
     <div className="flex-1 bg-white p-8 overflow-auto flex flex-col min-h-screen w-full">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-purple-600 font-[family:var(--font-montserrat)]">
+        <h1 className="text-3xl font-bold text-[#0033FF] font-[family:var(--font-montserrat)]">
           Settings
         </h1>
         {!isEditing && (
           <button
             onClick={handleModify}
-            className="bg-purple-600 text-white px-6 py-2 rounded-lg font-[family:var(--font-montserrat)] font-semibold text-sm hover:bg-purple-700 transition-colors"
+            className="bg-[#0033FF] text-white px-6 py-2 rounded-lg font-[family:var(--font-montserrat)] font-semibold text-sm hover:bg-[#0600AF] hover:text-[#FFCCF2] transition-colors"
           >
             Modify Profile
           </button>
@@ -81,19 +81,22 @@ export default function SettingsPage() {
               {settingsCards.map((card) => (
                 <div
                   key={card.key}
-                  className="bg-white border-2 border-purple-200 rounded-lg p-4 text-center hover:shadow-lg transition-shadow"
+                  className="bg-white border-2 border-[#977DFF] rounded-lg p-4 text-center hover:shadow-lg transition-shadow"
                 >
                   <div className="flex justify-center mb-2">
-                    <card.Icon className="w-6 h-6 text-purple-600" />
+                    <card.Icon className="w-6 h-6 text-[#0033FF]" />
                   </div>
-                  <h3 className="text-sm font-bold text-purple-600 mb-1 font-[family:var(--font-poppins)]">
+                  <h3 className="text-sm font-bold text-[#977DFF] mb-1 font-[family:var(--font-poppins)]">
                     {card.label}
                   </h3>
-                  <p className={`font-semibold text-gray-800 font-[family:var(--font-montserrat)] ${(card.key === 'email' || card.key === 'restrictions') ? 'text-base' : 'text-lg'}`}>
+                  <p
+                    className={`font-semibold text-[#0600AF] font-[family:var(--font-montserrat)] ${(card.key === 'email' || card.key === 'restrictions') ? 'text-base' : 'text-lg'} ${card.key === 'email' ? 'break-words whitespace-normal' : ''}`}
+                    style={card.key === 'email' ? { wordBreak: 'break-word', whiteSpace: 'normal' } : {}}
+                  >
                     {userSettings[card.key as keyof typeof userSettings]}
                   </p>
                   {card.unit && (
-                    <p className="text-xs text-gray-500 font-[family:var(--font-poppins)]">
+                    <p className="text-xs text-[#0033FF] font-[family:var(--font-poppins)]">
                       {card.unit}
                     </p>
                   )}
@@ -109,9 +112,22 @@ export default function SettingsPage() {
                     {card.label}
                   </label>
                   <input
-                    type={card.key === 'email' ? 'email' : 'text'}
-                    value={tempSettings[card.key as keyof typeof tempSettings]}
-                    onChange={(e) => handleInputChange(card.key, card.key.includes('calories') || card.key.includes('age') || card.key.includes('height') || card.key.includes('weight') ? parseInt(e.target.value) : e.target.value)}
+                      type={card.key === 'email' ? 'email' : 'text'}
+                      value={
+                        (card.key.includes('calories') || card.key.includes('age') || card.key.includes('height') || card.key.includes('weight'))
+                          ? (typeof tempSettings[card.key as keyof typeof tempSettings] === 'number' && !isNaN(tempSettings[card.key as keyof typeof tempSettings])
+                              ? tempSettings[card.key as keyof typeof tempSettings].toString()
+                              : '')
+                          : (tempSettings[card.key as keyof typeof tempSettings] ?? '')
+                      }
+                      onChange={(e) => handleInputChange(
+                        card.key,
+                        (card.key.includes('calories') || card.key.includes('age') || card.key.includes('height') || card.key.includes('weight'))
+                          ? e.target.value === ''
+                            ? ''
+                            : parseInt(e.target.value)
+                          : e.target.value
+                      )}
                     className="bg-white border-2 border-purple-600 text-gray-700 px-3 py-2 rounded-lg font-[family:var(--font-poppins)] text-sm focus:outline-none focus:border-purple-700"
                   />
                   {card.unit && (
