@@ -3,8 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-import { createClient } from '@/utils/supabase/server'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@/src/utils/supabase/server'
+import { prisma } from '@/src/lib/prisma'
 
 export async function login(formData: FormData) {
   const supabase = await createClient()
