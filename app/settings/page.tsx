@@ -106,35 +106,43 @@ export default function SettingsPage() {
           ) : (
             // Edit Mode - Grid Layout
             <div className="grid grid-cols-4 gap-4">
-              {settingsCards.map((card) => (
-                <div key={card.key} className="flex flex-col">
-                  <label className="text-purple-600 font-semibold mb-1 font-[family:var(--font-poppins)] text-xs">
-                    {card.label}
-                  </label>
-                  <input
+              {settingsCards.map((card) => {
+                const rawValue = tempSettings[card.key as keyof typeof tempSettings];
+                const isNumericField =
+                  card.key.includes('calories') ||
+                  card.key.includes('age') ||
+                  card.key.includes('height') ||
+                  card.key.includes('weight');
+                const displayValue = isNumericField
+                  ? (typeof rawValue === 'number' && !Number.isNaN(rawValue) ? rawValue.toString() : '')
+                  : (rawValue ?? '');
+
+                return (
+                  <div key={card.key} className="flex flex-col">
+                    <label className="text-purple-600 font-semibold mb-1 font-[family:var(--font-poppins)] text-xs">
+                      {card.label}
+                    </label>
+                    <input
                       type={card.key === 'email' ? 'email' : 'text'}
-                      value={
-                        (card.key.includes('calories') || card.key.includes('age') || card.key.includes('height') || card.key.includes('weight'))
-                          ? (typeof tempSettings[card.key as keyof typeof tempSettings] === 'number' && !isNaN(tempSettings[card.key as keyof typeof tempSettings])
-                              ? tempSettings[card.key as keyof typeof tempSettings].toString()
-                              : '')
-                          : (tempSettings[card.key as keyof typeof tempSettings] ?? '')
+                      value={displayValue}
+                      onChange={(e) =>
+                        handleInputChange(
+                          card.key,
+                          isNumericField
+                            ? e.target.value === ''
+                              ? ''
+                              : parseInt(e.target.value)
+                            : e.target.value
+                        )
                       }
-                      onChange={(e) => handleInputChange(
-                        card.key,
-                        (card.key.includes('calories') || card.key.includes('age') || card.key.includes('height') || card.key.includes('weight'))
-                          ? e.target.value === ''
-                            ? ''
-                            : parseInt(e.target.value)
-                          : e.target.value
-                      )}
-                    className="bg-white border-2 border-purple-600 text-gray-700 px-3 py-2 rounded-lg font-[family:var(--font-poppins)] text-sm focus:outline-none focus:border-purple-700"
-                  />
-                  {card.unit && (
-                    <p className="text-xs text-gray-500 mt-0.5">{card.unit}</p>
-                  )}
-                </div>
-              ))}
+                      className="bg-white border-2 border-purple-600 text-gray-700 px-3 py-2 rounded-lg font-[family:var(--font-poppins)] text-sm focus:outline-none focus:border-purple-700"
+                    />
+                    {card.unit && (
+                      <p className="text-xs text-gray-500 mt-0.5">{card.unit}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
 

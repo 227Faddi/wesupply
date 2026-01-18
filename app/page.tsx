@@ -1,33 +1,15 @@
+import Link from 'next/link';
 
-"use client";
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Onboarding from './onboarding/page';
-import MealPlan from './components/mealplan';
-import Budget from './components/budget';
-
-export default function Home() {
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const done = localStorage.getItem('wesupply_user_settings');
-      if (!done) setShowOnboarding(true);
-      setChecked(true);
-    }
-  }, []);
-
-  if (!checked) return null;
-  if (showOnboarding) {
-    return <Onboarding />;
-  }
-
-  return (
-    <>
-      <MealPlan />
-      <Budget />
-    </>
-  );
+export default function Landing() {
+	return (
+		<div className="flex flex-col items-center justify-center min-h-screen bg-white">
+			<h1 className="text-5xl font-extrabold text-[#0033FF] mb-6">WeSupply</h1>
+			<p className="text-lg text-gray-700 mb-10">Bienvenue sur WeSupply, votre assistant nutrition et budget !</p>
+			<Link href="/dashboard">
+				<button className="px-8 py-4 bg-[#0033FF] text-white rounded-2xl text-xl font-bold shadow-lg hover:bg-[#0600AF] transition-colors">
+					Accéder au Dashboard
+				</button>
+			</Link>
+		</div>
+	);
 }

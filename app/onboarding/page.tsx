@@ -1,9 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
-const questions = [
+type Question = {
+  key: string;
+  label: string;
+  type: 'text' | 'email' | 'number' | 'select';
+  placeholder?: string;
+  min?: number;
+  max?: number;
+  options?: string[];
+  required: boolean;
+};
+
+type ActivityQuestion = {
+  key: string;
+  label: string;
+  type: 'select';
+  options: string[];
+  required: boolean;
+};
+
+const questions: Question[] = [
   { key: 'name', label: 'What is your name?', type: 'text', placeholder: 'Enter your name', required: true },
   { key: 'email', label: 'What is your email?', type: 'email', placeholder: 'Enter your email', required: true },
   { key: 'age', label: 'How old are you?', type: 'number', placeholder: 'Enter your age', min: 1, max: 120, required: true },
@@ -17,11 +36,19 @@ const questions = [
   { key: 'knowsCalories', label: 'Do you know how many calories you consume daily?', type: 'select', options: ['Yes', 'No'], required: true },
 ];
 
-const activityQuestions = [
+const activityQuestions: ActivityQuestion[] = [
   { key: 'activityLevel', label: 'How active are you in sports?', type: 'select', options: ['Sedentary', 'Light', 'Moderate', 'Active'], required: true },
 ];
+type Props = {
+  sex : string;
+  weight : number;
+  height : number;
+  age : number;
+  metabolicRate? : number;
+  activityLevel? : string;
+}
 
-function calculateMetabolicRate({ sex, weight, height, age }) {
+function calculateMetabolicRate({ sex, weight, height, age }: Props) {
   if (sex === 'Male') {
     return 10 * weight + 6.25 * height - 5 * age + 5;
   } else {
@@ -29,7 +56,7 @@ function calculateMetabolicRate({ sex, weight, height, age }) {
   }
 }
 
-function calculateCaloriesBurned(metabolicRate, activityLevel) {
+function calculateCaloriesBurned(metabolicRate: number, activityLevel: string) {
   switch (activityLevel) {
     case 'Sedentary': return metabolicRate * 1.2;
     case 'Light': return metabolicRate * 1.375;
@@ -41,20 +68,20 @@ function calculateCaloriesBurned(metabolicRate, activityLevel) {
 
 export default function Onboarding() {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [calculatedCalories, setCalculatedCalories] = useState(null);
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [calculatedCalories, setCalculatedCalories] = useState<number | null>(null);
   const router = useRouter();
 
   const isLast = step === questions.length - 1 || (step === questions.length && answers.knowsCalories === 'Yes');
   const showActivity = step === questions.length && answers.knowsCalories === 'No';
   const totalSteps = questions.length + (answers.knowsCalories === 'No' ? 1 : 0);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setAnswers((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleNext = (e) => {
+  const handleNext = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (showActivity) {
       const metabolicRate = calculateMetabolicRate({
@@ -77,7 +104,7 @@ export default function Onboarding() {
     }
   };
 
-  const handleActivityChange = (e) => {
+  const handleActivityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setAnswers((prev) => ({ ...prev, activityLevel: e.target.value }));
   };
 
@@ -109,7 +136,7 @@ export default function Onboarding() {
                   <option value="" disabled>
                     Select an option
                   </option>
-                  {currentQuestion.options.map((opt) => (
+                  {currentQuestion.options?.map((opt) => (
                     <option key={opt} value={opt}>
                       {opt}
                     </option>
@@ -142,7 +169,7 @@ export default function Onboarding() {
           <button
             type="submit"
             className="w-full bg-[#0033FF] text-white py-3 rounded-lg font-bold text-lg font-[family:var(--font-montserrat)] hover:bg-[#0600AF] hover:text-[#FFCCF2] transition-colors"
-            disabled={currentQuestion && !answers[currentQuestion.key]}
+            disabled={Boolean(currentQuestion && !answers[currentQuestion.key])}
           >
             {isLast ? 'Finish' : 'Next'}
           </button>
