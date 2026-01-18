@@ -1,4 +1,9 @@
-import Link from 'next/link';
+import Image from "next/image";
+import "./globals.css";
+import { Button } from "./components/ui/Button/Button";
+import { FeatureCard } from "./components/ui/Card/featureCard";
+import { AlarmClock, Apple, Dumbbell, SquareStack, Zap, Leaf } from "lucide-react";
+import Header from "./components/layout/Header";
 
 export default function Landing() {
 	return (
