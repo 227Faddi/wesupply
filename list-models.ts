@@ -16,7 +16,7 @@ async function main() {
             const result = await model.generateContent("test");
             console.log(`Success with ${m}`);
             return;
-        } catch (e) {
+        } catch (e: any) {
             console.log(`Failed with ${m}: ${e.message}`);
         }
     }

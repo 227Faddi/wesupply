@@ -84,7 +84,7 @@ async function testEndpoint() {
     model: "gemini-2.5-flash",
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: mealPlanSchema,
+      responseSchema: mealPlanSchema as any,
     },
   });
 

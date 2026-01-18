@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType, type Schema } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/utils/supabase/server';
 
@@ -90,7 +90,7 @@ export async function POST(_req: Request) {
       model: "gemini-2.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
-        responseSchema: mealPlanSchema,
+        responseSchema: mealPlanSchema as any,
       },
     });
 

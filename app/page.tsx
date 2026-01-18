@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import "./globals.css";
 import { Button } from "./components/ui/Button/Button";
 import { FeatureCard } from "./components/ui/Card/featureCard";
