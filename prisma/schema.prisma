@@ -8,17 +8,71 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  age       Int?
+  height    Int?     // in cm
+  weight    Int?     // in kg
+  createdAt DateTime @default(now())
+
+  preferences UserPreferences?
+  mealPlans   MealPlan[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+model UserPreferences {
+  id                  Int      @id @default(autoincrement())
+  weeklyBudget        Float
+  dailyCalories       Int
+  dietaryRestrictions String[] // ["vegetarian", "gluten-free"]
+  allergens           String[] // ["nuts", "dairy"]
+  
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MealPlan {
+  id           Int      @id @default(autoincrement())
+  title        String   // "June Summer Meal Plan"
+  startDate    DateTime
+  totalCost    Float    @default(0) // total cost for entire meal plan
+  createdAt    DateTime @default(now())
+
+  userId Int
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meals  PlannedMeal[]
+}
+
+model PlannedMeal {
+  id         Int     @id @default(autoincrement())
+  weekNumber Int     // 1, 2, 3, 4
+  dayOfWeek  String  // "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"
+  mealType   String  // "breakfast", "lunch", "dinner"
+  
+  mealPlanId Int
+  mealPlan   MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  
+  recipeId   Int
+  recipe     Recipe   @relation(fields: [recipeId], references: [id])
+}
+
+model Recipe {
+  id           Int      @id @default(autoincrement())
+  name         String
+  imageUrl     String?
+  prepTime     Int      // minutes
+  servings     Int
+  instructions String   @db.Text
+  totalCost    Float    // total cost for recipe (all servings)
+  costPerServing Float  // cost per single serving
+  
+  // Nutrition per serving
+  calories     Int
+  protein      Int
+  carbs        Int
+  fats         Int
+  
+  ingredients  String   @db.Text // JSON: [{"name": "chicken", "amount": "500g", "price": 8.99}]
+  
+  meals        PlannedMeal[]
 }
