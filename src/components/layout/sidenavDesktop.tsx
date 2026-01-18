@@ -6,10 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { SIDENAV_ITEMS } from '@/Components/layout/sidenavitems';
-import { SideNavItem } from '@/Components/layout/sidenavitemTypes';
+import { SIDENAV_ITEMS } from '@/src/components/layout/sidenavitems';
+import { SideNavItem } from '@/src/components/layout/sidenavitemTypes';
 import { ChevronDown, PanelLeftOpen, PanelRightOpen } from 'lucide-react';
-import { Button } from '../ui/Button/Button';
+import { Button } from '@/src/components/Button/Button';
 
 const sidenavDesktop = ({ isOpen, onOpen, onClose }: { isOpen: boolean; onOpen: () => void; onClose: () => void }) => {
 

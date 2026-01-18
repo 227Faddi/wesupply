@@ -5,8 +5,8 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { SIDENAV_ITEMS } from '@/Components/layout/sidenavitems';
-import { SideNavItem, MenuItemWithSubMenuProps} from '@/Components/layout/sidenavitemTypes';
+import { SIDENAV_ITEMS } from '@/src/components/layout/sidenavitems';
+import { SideNavItem, MenuItemWithSubMenuProps} from '@/src/components/layout/sidenavitemTypes';
 
 import { motion, useCycle, Variants } from 'framer-motion';
 import { ChevronDown } from "lucide-react";

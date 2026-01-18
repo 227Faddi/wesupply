@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useState, ReactNode } from 'react';
-import { poppins } from "@/Components/ui/fonts";
+import React, { useState, ReactNode } from "react";
+import { poppins } from "@/src/styles/fonts";
 
-import DashboardHeader from "@/Components/layout/DashboardHeader";
-import SidenavMobile from "@/Components/layout/sidenavMobile";
-import SidenavDesktop from "@/Components/layout/sidenavDesktop";
-import PageWrapper from "@/Components/layout/page-wrapper";
-import MarginWidthWrapper from "@/Components/layout/margin-width-wrapper";
-import "@/styles/global.css"
+import DashboardHeader from "@/src/components/layout/DashboardHeader";
+import SidenavMobile from "@/src/components/layout/sidenavMobile";
+import SidenavDesktop from "@/src/components/layout/sidenavDesktop";
+import PageWrapper from "@/src/components/layout/page-wrapper";
+import MarginWidthWrapper from "@/src/components/layout/margin-width-wrapper";
+import "@/styles/global.css";
 
 export default function DashboardShell({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -20,8 +20,8 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={`bg-white ${poppins.className}`}>
         <div className="flex h-screen">
-          <SidenavDesktop 
-            isOpen={isSidebarOpen} 
+          <SidenavDesktop
+            isOpen={isSidebarOpen}
             onOpen={handleOpenSidebar}
             onClose={handleCloseSidebar}
           />
