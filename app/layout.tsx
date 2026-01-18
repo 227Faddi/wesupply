@@ -46,10 +46,10 @@ export default function RootLayout({
         <HideNavbarOnLanding>
           <Navbar />
         </HideNavbarOnLanding>
-        <div className="w-1/5"></div>
+        
         <div
           className="flex-1 custom-scrollbar"
-          style={{ marginRight: '20vw', background: '#fff' }}
+          style={{  background: '#fff' }}
         >
           {children}
         </div>
