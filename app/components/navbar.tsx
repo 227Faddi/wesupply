@@ -1,22 +1,64 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
-    <nav className="fixed left-0 top-0 w-1/5 h-screen bg-white border-r border-gray-200 flex flex-col items-center justify-between py-8 z-50">
-      <Link
-        href="/"
-        className="w-4/5 font-bold bg-white text-purple-500 py-3 px-6 rounded-lg hover:brightness-90 transition-opacity  text-center font-[family:var(--font-poppins)] border-purple-500 border"
-      >
-        Home
-      </Link>
-      <Link
-        href="/settings"
-        className="w-4/5 bg-white  text-purple-500 py-3 px-6 rounded-lg hover:brightness-90 transition-opacity font-bold text-center font-[family:var(--font-poppins)] border-purple-500 border"
-      >
-        Settings
-      </Link>
+    <nav className="fixed left-0 top-0 w-1/5 h-screen flex flex-col items-center py-8 z-50 border-r border-[#977DFF]/40 bg-white"
+      style={{
+        background: '#fff',
+        boxShadow: '0 8px 32px 0 rgba(151, 125, 255, 0.10)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderRight: '2px solid #977DFF22',
+        borderRadius: '0 32px 32px 0',
+      }}
+    >
+      {/* Logo/Brand */}
+      <div className="mb-10 flex flex-col items-center">
+        <div
+          className="rounded-3xl bg-white shadow-xl flex items-center justify-center backdrop-blur-lg overflow-hidden"
+          style={{ width: 160, height: 64 }}
+        >
+          <Image
+            src="/wesupply.avif"
+            alt="Logo WeSupply"
+            width={160}
+            height={64}
+            priority
+            className="drop-shadow-sm"
+            style={{ clipPath: 'inset(10% 0 10% 0)', objectFit: 'contain' }}
+          />
+        </div>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex flex-col gap-6 w-full items-center flex-1">
+        <Link
+          href="/dashboard"
+          className="w-4/5 font-bold bg-white text-[#0033FF] py-3 px-6 rounded-2xl hover:bg-[#e9e6ff] hover:text-[#0033FF] transition-all text-center font-[family:var(--font-poppins)] border border-[#977DFF]/60 shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#977DFF]/40 backdrop-blur-lg"
+        >
+          Home
+        </Link>
+        <Link
+          href="/onboarding"
+          className="w-4/5 font-bold bg-white text-[#0033FF] py-3 px-6 rounded-2xl hover:bg-[#977DFF]/80 hover:text-white transition-all text-center font-[family:var(--font-poppins)] border border-[#0033FF]/60 shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#0033FF]/40 backdrop-blur-lg"
+        >
+          Quizz
+        </Link>
+        <Link
+          href="/settings"
+          className="w-4/5 font-bold bg-white text-[#0033FF] py-3 px-6 rounded-2xl hover:bg-[#977DFF]/80 hover:text-white transition-all text-center font-[family:var(--font-poppins)] border border-[#0033FF]/60 shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#0033FF]/40 backdrop-blur-lg"
+        >
+          Settings
+        </Link>
+      </div>
+
+      {/* Footer or version */}
+      <div className="mt-10 text-xs text-[#977DFF] font-[family:var(--font-poppins)] drop-shadow-sm">
+        © 2026 WeSupply
+      </div>
     </nav>
   );
 }
