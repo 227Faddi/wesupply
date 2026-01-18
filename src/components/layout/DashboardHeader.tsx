@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 
 import useScroll from '@/src/hooks/use-scroll';
-import { cn } from '@/lib/utils';
+import { cn } from '@/src/lib/utils';
 
 const DashboardHeader = () => {
   
