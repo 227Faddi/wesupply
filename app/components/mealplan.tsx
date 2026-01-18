@@ -1,50 +1,89 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 type DayKey = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI';
 type WeekKey = 'WEEK 1' | 'WEEK 2' | 'WEEK 3' | 'WEEK 4';
+
+interface Recipe {
+  name: string;
+}
+
+interface PlannedMeal {
+  weekNumber: number;
+  dayOfWeek: string;
+  mealType: string;
+  recipe: Recipe;
+}
+
+interface MealPlanData {
+  id: number;
+  title: string;
+  meals: PlannedMeal[];
+}
 
 export default function MealPlan() {
   const days: DayKey[] = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
   const weeks: WeekKey[] = ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4'];
   
-  const mealData: Record<DayKey, Record<WeekKey, { B: string; L: string; D: string }>> = {
-    MON: {
-      'WEEK 1': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 2': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-      'WEEK 3': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 4': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-    },
-    TUE: {
-      'WEEK 1': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet potato' },
-      'WEEK 2': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 3': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet potato' },
-      'WEEK 4': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-    },
-    WED: {
-      'WEEK 1': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-      'WEEK 2': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet potato' },
-      'WEEK 3': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-      'WEEK 4': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet potato' },
-    },
-    THU: {
-      'WEEK 1': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet eggplant and tofu' },
-      'WEEK 2': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 3': { B: 'Cereal', L: 'Tofu barbecue & garlic rice', D: 'Roasted sweet eggplant and tofu' },
-      'WEEK 4': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-    },
-    FRI: {
-      'WEEK 1': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 2': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-      'WEEK 3': { B: 'Oatmeal', L: 'Stir fried vegetables', D: 'Roast eggplant and tofu' },
-      'WEEK 4': { B: 'Banana Ice Cream', L: 'Stir fried veggies', D: 'Roast veggies' },
-    },
-  };
+  // Initialize with empty structure to prevent layout collapse
+  const initialData: Record<DayKey, Record<WeekKey, { B: string; L: string; D: string }>> = {} as any;
+  days.forEach(day => {
+    initialData[day] = {};
+    weeks.forEach(week => {
+      initialData[day][week] = { B: '-', L: '-', D: '-' };
+    });
+  });
+
+  const [mealData, setMealData] = useState<Record<DayKey, Record<WeekKey, { B: string; L: string; D: string }>>>(initialData);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchMealPlan() {
+      try {
+        const res = await fetch('/api/meal-plans');
+        if (!res.ok) {
+          throw new Error('Failed to fetch meal plans');
+        }
+        const data: MealPlanData[] = await res.json();
+        
+        if (data.length > 0) {
+          const latestPlan = data[0];
+          const processedData: any = JSON.parse(JSON.stringify(initialData)); // Deep copy empty structure
+          
+          latestPlan.meals.forEach(meal => {
+            const day = meal.dayOfWeek as DayKey;
+            const week = `WEEK ${meal.weekNumber}` as WeekKey;
+            
+            if (processedData[day] && processedData[day][week]) {
+              const val = meal.recipe.name;
+              if (meal.mealType.toLowerCase() === 'breakfast') processedData[day][week].B = val;
+              else if (meal.mealType.toLowerCase() === 'lunch') processedData[day][week].L = val;
+              else if (meal.mealType.toLowerCase() === 'dinner') processedData[day][week].D = val;
+            }
+          });
+          
+          setMealData(processedData);
+        }
+      } catch (err) {
+        console.error(err);
+        setError('Error loading meal plan');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchMealPlan();
+  }, []);
 
   return (
     <main className="flex-1 p-8 bg-white overflow-auto">
       <h1 className="text-3xl font-bold text-purple-600 text-center mb-8 font-[family:var(--font-montserrat)]">
-        Meal Plan
+        Meal Plan {loading && <span className="text-sm font-normal text-gray-400">(Loading...)</span>}
       </h1>
+
+      {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse font-[family:var(--font-poppins)] shadow-2xl rounded-lg overflow-hidden">
