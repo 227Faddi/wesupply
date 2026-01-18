@@ -11,13 +11,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} `}>
-        
-     
-        
-        {children}
-      
-
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${poppins.variable} antialiased flex`}
+        style={{ background: '#fff' }}
+      >
+        <Navbar />
+        <div className="w-1/5"></div>
+        <div
+          className="flex-1 custom-scrollbar"
+          style={{ marginRight: '20vw', background: '#fff' }}
+        >
+          {children}
+        </div>
       </body>
     </html>
   );
