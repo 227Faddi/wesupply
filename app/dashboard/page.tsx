@@ -1,7 +1,7 @@
 
 "use client";
 
-import Onboarding from '../onboarding/page';
+import Onboarding from './onboarding/page';
 import MealPlan from '../components/mealplan';
 import Budget from '../components/budget';
 import { useEffect, useState } from 'react';
