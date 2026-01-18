@@ -25,7 +25,7 @@ export default function Navbar() {
       {/* Navigation Links */}
       <div className="flex flex-col gap-6 w-full items-center flex-1">
         <Link
-          href="/"
+          href="/dashboard"
           className="w-4/5 font-bold bg-white text-[#0033FF] py-3 px-6 rounded-2xl hover:bg-[#e9e6ff] hover:text-[#0033FF] transition-all text-center font-[family:var(--font-poppins)] border border-[#977DFF]/60 shadow-md hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#977DFF]/40 backdrop-blur-lg"
         >
           Home

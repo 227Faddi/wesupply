@@ -2,14 +2,18 @@ import Link from 'next/link';
 
 export default function Landing() {
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen bg-white">
-			<h1 className="text-5xl font-extrabold text-[#0033FF] mb-6">WeSupply</h1>
-			<p className="text-lg text-gray-700 mb-10">Bienvenue sur WeSupply, votre assistant nutrition et budget !</p>
-			<Link href="/dashboard">
-				<button className="px-8 py-4 bg-[#0033FF] text-white rounded-2xl text-xl font-bold shadow-lg hover:bg-[#0600AF] transition-colors">
-					Accéder au Dashboard
-				</button>
-			</Link>
+		<div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br ">
+			<div className="bg-white/90 rounded-3xl shadow-2xl p-10 flex flex-col items-center max-w-xl w-full">
+				<h1 className="text-6xl font-extrabold text-[#0033FF] mb-4 tracking-tight drop-shadow-lg">WeSupply</h1>
+				<p className="text-xl text-gray-700 mb-8 text-center font-medium max-w-md">
+					"Empower your meals. Master your budget. Simplify your life."
+				</p>
+				<Link href="/onboarding">
+					<button className="px-10 py-4 bg-gradient-to-r from-[#0033FF] to-[#4F8CFF] text-white rounded-full text-2xl font-bold shadow-lg hover:from-[#0600AF] hover:to-[#0033FF] transition-all duration-200">
+						Get Started
+					</button>
+				</Link>
+			</div>
 		</div>
 	);
 }
