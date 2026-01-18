@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat, Poppins } from "next/font/google";
-import Navbar from "./components/navbar";
-import HideNavbarOnLanding from "./components/HideNavbarOnLanding";
-import Budget from "./components/budget";
+import Navbar from "../components/navbar";
+import HideNavbarOnLanding from "../components/HideNavbarOnLanding";
+import Budget from "../components/budget";
 import "./globals.css";
 
 const geistSans = Geist({

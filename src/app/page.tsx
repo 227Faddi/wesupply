@@ -1,9 +1,9 @@
 import Image from "next/image";
 import "./globals.css";
-import { Button } from "./components/Button/Button";
-import { FeatureCard } from "./components/Card/featureCard";
+import { Button } from "../components/Button/Button";
+import { FeatureCard } from "../components/Card/featureCard";
 import { AlarmClock, Apple, Dumbbell, SquareStack, Zap, Leaf } from "lucide-react";
-import Header from "./components/layout/Header";
+import Header from "../components/layout/Header";
 
 export default function HomePage() {
   return (
